@@ -1,0 +1,16 @@
+{
+    "name": "nohn/ctfr",
+    "description": "Query a domain for subdomains using Certificate Transparency logs.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Nohn",
+            "email": "sebastian@nohn.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+	"php": ">=7.1.0"
+    }
+}
