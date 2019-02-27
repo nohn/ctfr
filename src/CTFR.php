@@ -27,14 +27,20 @@ namespace Nohn;
 
 class CTFR {
 
-    public static function query($domain, $only_return_valid_certs = true) {
-        $raw_json_subdomains = file_get_contents('https://crt.sh/?q=%.' . $domain . '&output=json');
-        $raw_json_domain = file_get_contents('https://crt.sh/?q=' . $domain . '&output=json');
-
+    public static function query($domain, $include_subdomains = true, $only_return_valid_certs = true) {
         $filtered_json = array();
-        $certs_subdomains = json_decode($raw_json_subdomains);
+
+        $raw_json_domain = file_get_contents('https://crt.sh/?q=' . $domain . '&output=json');
         $certs_domain = json_decode($raw_json_domain);
-        $certs = array_merge($certs_domain, $certs_subdomains);
+
+        if ($include_subdomains) {
+            $raw_json_subdomains = file_get_contents('https://crt.sh/?q=%.' . $domain . '&output=json');
+            $certs_subdomains = json_decode($raw_json_subdomains);
+            $certs = array_merge($certs_domain, $certs_subdomains);
+        } else {
+            $certs = $certs_domain;
+        }
+
         foreach ($certs as $cert) {
             if ($only_return_valid_certs) {
                 if (
